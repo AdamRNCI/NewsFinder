@@ -1,0 +1,12 @@
+<table>
+    <% for(var i=0; i < articles.length; i++) { %>
+        <tr>
+            <div class="border mb-3 p-3">
+                <h3><%= articles[i]['webTitle'] %></h3>
+                <p><%= articles[i]['webUrl'] %></p>
+                <p><%= articles[i]['webPublicationDate'] %></p>
+            </div>
+
+        </tr>
+    <% } %>
+</table>
