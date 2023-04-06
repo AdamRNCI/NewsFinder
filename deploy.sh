@@ -8,7 +8,9 @@ pm2 stop news-finder
 cd NewsFinder/
 # Install application dependencies
 npm install
+touch .env
 echo $PRIVATE_KEY > privatekey.pem
 echo $SERVER > server.crt
+echo $GUARDIAN_API_KEY > .env
 # Start the application with the process name simple_application using pm2
 pm2 start ./bin/www --name news-finder

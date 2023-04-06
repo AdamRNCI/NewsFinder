@@ -1,3 +1,5 @@
+const config = require("dotenv").config();
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -19,12 +21,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
+
 const BASE_URL = "https://content.guardianapis.com/"
-const API_KEY = "939f4eba-51b1-445e-b510-cc5670eb962c"
 
 app.get('/', async (req, res) => {
   var section = "search"
-  const url = `${BASE_URL}${section}?api-key=${API_KEY}`;
+  const url = `${BASE_URL}${section}?api-key=${GUARDIAN_API_KEY}`;
   const options = {
       method: 'GET'
   };
@@ -43,7 +46,7 @@ app.get('/', async (req, res) => {
 
 app.get('/:section', async (req, res) => {
   section = req.params.section
-  const url = `${BASE_URL}${section}?api-key=${API_KEY}`;
+  const url = `${BASE_URL}${section}?api-key=${GUARDIAN_API_KEY}`;
   const options = {
       method: 'GET'
   };
