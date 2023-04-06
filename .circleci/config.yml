@@ -49,6 +49,21 @@ jobs:
       - run:
           name: Publish Docker Image
           command: docker push $IMAGE_NAME
+      - run:
+          name: set-environment-variables
+          command: echo $SERVER > server.crt && echo $PRIVATE_KEY > privatekey.pem
+      - run:
+          name: build-docker-image-for-integration-environment
+          command: docker create -p 8443:8443 --name newsfinder $IMAGE_NAME
+      - run:
+          name: copy-server-cert-and-private-key-across
+          command: docker cp ./privatekey.pem newsfinder:/privatekey.pem; docker cp ./server.crt integration_app:/server.crt
+      - run:
+          name: start-docker-container
+          command: docker start newsfinder
+      - run:
+          name: run-zap-scan-against-container
+          command: CONTAINER_IP=$(docker inspect integration_app --format='{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}'); docker run -t owasp/zap2docker-stablezap-baseline.py -t https://$CONTAINER_IP:8443 -P 8443
 
   deploy: 
     docker:
